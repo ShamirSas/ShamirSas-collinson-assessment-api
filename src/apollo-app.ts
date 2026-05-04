@@ -3,9 +3,9 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { IApolloAppServerArgs } from "./apollo-app.interface.js";
 
 export class ApolloApp {
-  static #serverInstance: ApolloServer;
+  static #serverInstance: ApolloServer | undefined;
 
-  static get server(): ApolloServer {
+  static get server(): ApolloServer | undefined {
     return ApolloApp.#serverInstance;
   }
 
@@ -52,6 +52,13 @@ export class ApolloApp {
       }
     }
 
+    // The #serverInstance should be defined at this point, but we'll check anyway for safety.
+    if (!ApolloApp.#serverInstance) {
+      throw new Error(
+        "Unable to start standalone server: No server instance found",
+      );
+    }
+
     return startStandaloneServer(ApolloApp.#serverInstance, {
       listen: { port },
     });
@@ -60,11 +67,12 @@ export class ApolloApp {
   /**
    * Stops the server instance if it exists.
    */
-  static stop(): void {
+  static async stop(): Promise<void> {
     if (!ApolloApp.#serverInstance) {
       return;
     }
 
-    ApolloApp.#serverInstance.stop();
+    await ApolloApp.#serverInstance.stop();
+    ApolloApp.#serverInstance = undefined;
   }
 }
