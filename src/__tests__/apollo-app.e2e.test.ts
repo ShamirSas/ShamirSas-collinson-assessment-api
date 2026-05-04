@@ -1,14 +1,17 @@
 import { afterAll, beforeAll, describe, it, expect } from "@jest/globals";
 import type { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { createApolloServer } from "../apolloApp";
+import { ApolloApp } from "../apollo-app";
+import { TestUtil } from "./test-util.test";
 
 describe("books GraphQL (e2e)", () => {
   let server: ApolloServer;
   let baseUrl: string;
 
   beforeAll(async () => {
-    server = createApolloServer();
+    server = ApolloApp.createServerInstance(
+      TestUtil.getApolloAppServerBooksArgs()
+    );
     const { url } = await startStandaloneServer(server, {
       listen: { port: 0 },
     });
@@ -20,12 +23,7 @@ describe("books GraphQL (e2e)", () => {
   });
 
   it("returns books over HTTP", async () => {
-    const res = await fetch(baseUrl, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ query: `{ books { title author } }` }),
-    });
-
+    const res: Response = await TestUtil.doQuery(baseUrl, `{ books { title author } }`);
     expect(res.ok).toBe(true);
     const json = (await res.json()) as {
       data?: { books: Array<{ title: string; author: string }> };
