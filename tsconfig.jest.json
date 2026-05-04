@@ -5,7 +5,8 @@
     "moduleResolution": "node",
     "rootDir": ".",
     "noEmit": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "resolveJsonModule": true,
   },
   "include": ["src/**/*.ts"]
 }
