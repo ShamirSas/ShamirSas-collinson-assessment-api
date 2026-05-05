@@ -15,7 +15,7 @@ export interface IHttpClient {
   get(url: string, options?: IHttpClientOptions): Promise<Response>;
   getJson<DataType = any>(
     url: string,
-    options?: IHttpClientOptions,
+    options?: IHttpClientOptionsParams,
   ): Promise<DataType>;
   // Commented these because it's not needed for this implementation.
   // post(url: string, data: any, options?: IHttpClientOptions): Promise<Response>;
