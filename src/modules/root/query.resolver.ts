@@ -1,6 +1,10 @@
-import { LocationLib } from "../location/location.lib";
+import { LocationSearchResponse } from "../../shared/http/integrations/location-http-client.interface";
+import { LocationLib } from "../location";
 export class QueryResolver {
-  public getLocations = (_: any, { search }: { search: string }) => {
-    return LocationLib.getLocations(search);
-  };
+  public getLocations(
+    _: any,
+    { name }: { name: string },
+  ): Promise<LocationSearchResponse> {
+    return LocationLib.getLocations(name);
+  }
 }

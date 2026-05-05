@@ -40,14 +40,13 @@ describe("LocationHttpClient", () => {
 
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     expect(fetchSpy).toHaveBeenCalledWith(
-      "https://geocoding-api.open-meteo.com/v1/search",
+      "https://geocoding-api.open-meteo.com/v1/search?name=Cape Town",
       {
         method: "GET",
-        queryParams: { name: "Cape Town" },
       } as any,
     );
     expect(jsonMock).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(locations);
+    expect(result).toEqual({ results: locations });
   });
 
   it("getLocations should return an empty array when API results are empty", async () => {
@@ -58,7 +57,7 @@ describe("LocationHttpClient", () => {
     const client = new LocationHttpClient();
     const result = await client.getLocations("Unknown");
 
-    expect(result).toEqual([]);
+    expect(result).toEqual({ results:[] });
     expect(jsonMock).toHaveBeenCalledTimes(1);
   });
 });

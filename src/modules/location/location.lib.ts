@@ -1,8 +1,21 @@
-import { LocationHttpClient } from "../../shared/http";
-import { Location } from "../../shared/schemas";
+import { NoDataFoundMessage } from "../../shared/classes";
+import {
+  LocationHttpClient,
+  LocationSearchApiResponseData,
+  LocationSearchResponse,
+} from "../../shared/http";
 
 export class LocationLib {
-  public static async getLocations(searchText: string): Promise<Location[]> {
-    return new LocationHttpClient().getLocations(searchText);
+  public static async getLocations(
+    searchText: string,
+  ): Promise<LocationSearchResponse> {
+    const { results: locations }: LocationSearchApiResponseData =
+      await new LocationHttpClient().getLocations(searchText);
+
+    if (Array.isArray(locations) && locations.length > 0) {
+      return { locations };
+    }
+
+    return new NoDataFoundMessage();
   }
 }

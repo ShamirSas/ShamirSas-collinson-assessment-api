@@ -63,10 +63,7 @@ export class FetchHttpClient implements IHttpClient {
     if (options?.headers) {
       httpOptions.headers = options.headers;
     }
-    if (options?.queryParams) {
-      httpOptions.queryParams = options.queryParams;
-    }
-
+    
     return httpOptions;
   }
 }

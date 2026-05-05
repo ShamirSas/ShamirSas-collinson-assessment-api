@@ -8,7 +8,6 @@ export interface IHttpClientOptions {
 
 export interface IHttpClientOptionsParams {
   headers?: Record<string, string>;
-  queryParams?: Record<string, string>;
 }
 
 export interface IHttpClient {

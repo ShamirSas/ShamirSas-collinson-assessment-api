@@ -1,12 +1,17 @@
 import { LocationLib } from "../location.lib";
 import { LocationHttpClient } from "../../../shared/http";
 import { Location } from "../../../shared/schemas";
-import { describe, it, expect } from "@jest/globals";
+import { NoDataFoundMessage } from "../../../shared/classes";
+import { afterEach, describe, it, expect, jest } from "@jest/globals";
 
 describe("LocationLib", () => {
-  it("should call LocationHttpClient.getLocations and return its mocked response", async () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("should return locations when API response contains results", async () => {
     const searchText = "London";
-    const mockLocation: Location[] = [
+    const mockLocations: Location[] = [
       {
         admin1_id: "1",
         admin1: "England",
@@ -27,14 +32,38 @@ describe("LocationLib", () => {
       },
     ];
 
-    const getLocationSpy = jest
+    const getLocationsSpy = jest
       .spyOn(LocationHttpClient.prototype, "getLocations")
-      .mockResolvedValue(mockLocation);
+      .mockResolvedValue({ results: mockLocations });
 
     const results = await LocationLib.getLocations(searchText);
 
-    expect(getLocationSpy).toHaveBeenCalledTimes(1);
-    expect(getLocationSpy).toHaveBeenCalledWith(searchText);
-    expect(results).toEqual(mockLocation);
+    expect(getLocationsSpy).toHaveBeenCalledTimes(1);
+    expect(getLocationsSpy).toHaveBeenCalledWith(searchText);
+    expect(results).toEqual({ locations: mockLocations });
+  });
+
+  it("should return NoDataFoundMessage when API response has empty results", async () => {
+    const getLocationsSpy = jest
+      .spyOn(LocationHttpClient.prototype, "getLocations")
+      .mockResolvedValue({ results: [] });
+
+    const result = await LocationLib.getLocations("Unknown");
+
+    expect(getLocationsSpy).toHaveBeenCalledTimes(1);
+    expect(result).toBeInstanceOf(NoDataFoundMessage);
+    expect(result).toEqual(new NoDataFoundMessage());
+  });
+
+  it("should return NoDataFoundMessage when API response has no results field", async () => {
+    const getLocationsSpy = jest
+      .spyOn(LocationHttpClient.prototype, "getLocations")
+      .mockResolvedValue({});
+
+    const result = await LocationLib.getLocations("Unknown");
+
+    expect(getLocationsSpy).toHaveBeenCalledTimes(1);
+    expect(result).toBeInstanceOf(NoDataFoundMessage);
+    expect(result).toEqual(new NoDataFoundMessage());
   });
 });
