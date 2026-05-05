@@ -1,0 +1,13 @@
+type ResponseMessage {
+  message: String!
+}
+
+type Locations {
+  locations: [Location!]!
+}
+
+union LocationsSearchResponse = Locations | ResponseMessage
+
+type Query {
+  getLocations(name: String!): LocationsSearchResponse
+}

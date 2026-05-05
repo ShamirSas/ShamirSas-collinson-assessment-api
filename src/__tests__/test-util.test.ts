@@ -1,4 +1,4 @@
-import { IApolloAppServerArgs } from "../apollo-app.interface.js";
+import { IApolloAppServerArgs } from "../apollo-app.interface";
 import booksJson from "./books.json";
 
 interface IBook {

@@ -1,0 +1,22 @@
+import { NoDataFoundMessage } from "../../classes";
+import { Location } from "../../schemas";
+import { FetchHttpClient, IHttpClient } from "../base";
+import { LocationSearchApiResponseData, LocationSearchResponse } from "./location-http-client.interface";
+
+export class LocationHttpClient {
+  /**
+   * Inject the http client desired to be used for http requests.
+   */
+  constructor(
+    private readonly httpClient: IHttpClient = new FetchHttpClient(),
+  ) {}
+
+  /**
+   * Get location by search text
+   * @param searchText - The search text to get the location
+   * @returns The location
+   */
+  async getLocations(name: string): Promise<LocationSearchApiResponseData> {
+    return this.httpClient.getJson<LocationSearchApiResponseData>(`https://geocoding-api.open-meteo.com/v1/search?name=${name}`);
+  }
+}

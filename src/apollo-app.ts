@@ -1,6 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { IApolloAppServerArgs } from "./apollo-app.interface.js";
+import { IApolloAppServerArgs } from "./apollo-app.interface";
+import { GraphQLSchema } from "graphql";
 
 export class ApolloApp {
   static #serverInstance: ApolloServer | undefined;
@@ -16,11 +17,8 @@ export class ApolloApp {
    * @param resolvers - The resolvers for the server.
    * @returns The server instance.
    */
-  static createServerInstance({
-    typeDefs,
-    resolvers,
-  }: IApolloAppServerArgs): ApolloServer {
-    ApolloApp.#serverInstance = new ApolloServer({ typeDefs, resolvers });
+  static createServerInstance(args: IApolloAppServerArgs): ApolloServer {
+    ApolloApp.#serverInstance = new ApolloServer(args);
     return ApolloApp.#serverInstance;
   }
 
@@ -40,11 +38,14 @@ export class ApolloApp {
   ): Promise<{ url: string }>;
   static startStandaloneServer(
     port: number,
-    { typeDefs, resolvers }: Partial<IApolloAppServerArgs> = {},
+    serverArgs: Partial<IApolloAppServerArgs> = {},
   ): Promise<{ url: string }> {
+    
     if (!ApolloApp.#serverInstance) {
-      if (typeDefs && resolvers) {
-        ApolloApp.createServerInstance({ typeDefs, resolvers });
+      if (serverArgs && "schema" in serverArgs) {
+        ApolloApp.createServerInstance({ schema: serverArgs.schema as GraphQLSchema });
+      } else if (serverArgs && "typeDefs" in serverArgs && "resolvers" in serverArgs) {
+        ApolloApp.createServerInstance({ typeDefs: serverArgs.typeDefs as string, resolvers: serverArgs.resolvers as Record<string, any> });
       } else {
         throw new Error(
           "Unable to start standalone server: Please provide typeDefs and resolvers",
