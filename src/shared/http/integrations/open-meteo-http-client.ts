@@ -2,37 +2,23 @@ import { Forecast } from "../../schemas";
 import { FetchHttpClient, IHttpClient } from "../base";
 import { IntegrationHttpClientBase } from "./integration-http-client-base";
 
-interface RankingParams {
-    minTemperature: number;
-    maxTemperature: number;
-    minWindSpeed: number;
-    maxWindSpeed: number;
-    minRain: number;
-    maxRain: number;
-    minSnowfall: number;
-    maxSnowfall: number;
-    visibility: number;
-}
 export class OpenMeteoHttpClient extends IntegrationHttpClientBase {
-    private readonly rankingParams = {
-        surfing: {
-            minTemperature: 18,
-            maxTemperature: 28,
-            minWindSpeed: 10,
-            maxWindSpeed: 20,
-            minRain: 0,
-            maxRain: 10,
-            minShowers: 0,
-            maxShowers: 10,
-            minSnowfall: 0,
-        }
-    };
   private readonly httpClient: IHttpClient = new FetchHttpClient();
+
+  /**
+   * Inject the http client desired to be used for http requests.
+   */
   constructor(httpClient: IHttpClient = new FetchHttpClient()) {
     super(httpClient);
     this.httpClient = httpClient;
   }
 
+  /*
+  * Get the forecast for a given longitude and latitude.
+  * @param longitude - The longitude of the location.
+  * @param latitude - The latitude of the location.
+  * @returns The forecast.
+  */
   public async getForecast(
     longitude: number,
     latitude: number,
