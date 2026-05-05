@@ -1,0 +1,18 @@
+type Location {
+    admin1_id: String!
+    admin1: String!
+    admin2_id: String!
+    admin2: String!
+    admin3_id: String!
+    admin3: String!
+    country_code: String!
+    country_id: String!
+    country: String!
+    elevation: Float!
+    feature_code: String!
+    id: ID!
+    latitude: Float!
+    longitude: Float!
+    name: String!
+    timezone: String!
+}
