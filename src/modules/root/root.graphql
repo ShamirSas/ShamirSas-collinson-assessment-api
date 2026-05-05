@@ -10,4 +10,5 @@ union LocationsSearchResponse = Locations | ResponseMessage
 
 type Query {
   getLocations(name: String!): LocationsSearchResponse
+  getRanking(longitude: Float!, latitude: Float!): Ranking
 }
