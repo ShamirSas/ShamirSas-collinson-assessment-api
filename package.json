@@ -2,8 +2,7 @@
   "name": "shamirsas-collinson-assessment-api",
   "version": "1.0.0",
   "description": "Collinson senior back-end developer assessment api",
-  "main": "dist/index.ts",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && node ./dist/index.js",
@@ -18,17 +17,22 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^5.5.0",
+    "@graphql-tools/graphql-file-loader": "^8.1.14",
+    "@graphql-tools/load": "^8.1.10",
+    "@graphql-tools/schema": "^10.0.33",
     "graphql": "^16.13.2",
-    "tsx": "^4.21.0"
+    "openmeteo": "^1.2.3",
+    "tsx": "^4.21.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@jest/globals": "^30.3.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
-    "jest": "^30.3.0",
-    "ts-jest": "^29.4.9",
     "husky": "^9.1.7",
+    "jest": "^30.3.0",
     "nodemon": "^3.1.14",
+    "ts-jest": "^29.4.9",
     "typescript": "^6.0.3"
   }
 }
