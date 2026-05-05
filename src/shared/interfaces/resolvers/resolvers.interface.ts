@@ -1,0 +1,1 @@
+export type ResolveTypeFunction<T = unknown, K extends string = string> = (obj: T) => K | null;

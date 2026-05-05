@@ -1,4 +1,4 @@
-import { IMessage } from "../interfaces/share.interface";
+import { IMessage } from "../interfaces/common.interface";
 
 
 export abstract class ResponseMessage implements IMessage {
