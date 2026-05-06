@@ -4,7 +4,7 @@ import { ResolveType, Resolver } from "../shared/classes";
 
 type ResolverClass = new () => ResolveType | Resolver;
 
-function getResolverFiles(directoryPath: string): string[] {
+export function getResolverFiles(directoryPath: string): string[] {
   const entries = fs.readdirSync(directoryPath, { withFileTypes: true });
   const files: string[] = [];
 
@@ -24,7 +24,7 @@ function getResolverFiles(directoryPath: string): string[] {
   return files;
 }
 
-function isResolverClass(value: unknown): value is ResolverClass {
+export function isResolverClass(value: unknown): value is ResolverClass {
   if (typeof value !== "function") {
     return false;
   }
